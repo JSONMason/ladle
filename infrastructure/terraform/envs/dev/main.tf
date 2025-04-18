@@ -22,13 +22,12 @@ data "digitalocean_ssh_key" "ladle" {
 
 module "ladle_vm" {
   source   = "../../modules/vm"
-  provider = "digitalocean"
   name     = "ladle-app"
   region   = "nyc3"
   size     = "s-1vcpu-1gb"
   image    = "docker-20-04"
   ssh_keys = [data.digitalocean_ssh_key.ladle.id]
-  repo_url = "https://github.com/yourusername/ladle.git"
+  repo_url = "https://github.com/JSONMason/ladle.git"
 }
 
 output "ladle_public_ip" {

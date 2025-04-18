@@ -1,0 +1,64 @@
+services:
+  server:
+    build:
+      context: ../../server
+      dockerfile: ../infrastructure/docker/server.Dockerfile
+      target: dev
+    container_name: ladle-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../../server/:/app
+    networks:
+      - ladle-net
+    environment:
+      - GO_ENV=development
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
+
+  client:
+    build:
+      context: ../../client
+      dockerfile: ../infrastructure/docker/client.Dockerfile
+    container_name: ladle-client
+    depends_on:
+      - server
+    networks:
+      - ladle-net
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+
+  db:
+    image: postgres
+    container_name: ladle-db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - ladle-net
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+
+  migrate:
+    image: migrate/migrate
+    command:
+      - "-path=/migrations"
+      - "-database=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable"
+      - "up"
+    depends_on:
+      - db
+    volumes:
+      - ../../server/migrations:/migrations
+    networks:
+      - ladle-net
+
+volumes:
+  db-data:
+
+networks:
+  ladle-net:
+    driver: bridge

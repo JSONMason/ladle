@@ -1,0 +1,25 @@
+name: Reusable CI Tests
+
+on:
+  workflow_call: {}
+
+jobs:
+  test-server:
+    name: Test Go Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.24"
+
+      - name: Install dependencies
+        working-directory: server
+        run: go mod tidy
+
+      - name: Run tests
+        working-directory: server
+        run: go test ./... -v

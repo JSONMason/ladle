@@ -1,0 +1,9 @@
+services:
+  server:
+    image: ghcr.io/jsonmason/ladle-server:latest
+    build:
+      target: prod
+    environment:
+      - GO_ENV=production
+  client:
+    image: ghcr.io/jsonmason/ladle-client:latest

@@ -1,0 +1,35 @@
+services:
+  # Backend service (Go)
+  server:
+    build:
+      context: ../../server
+      dockerfile: ../infrastructure/docker/server.Dockerfile
+      target: dev
+    container_name: ladle-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../../server/:/app
+    networks:
+      - ladle-net
+    environment:
+      - GO_ENV=development
+
+  # Frontend service (SvelteKit)
+  client:
+    build:
+      context: ../../client
+      dockerfile: ../infrastructure/docker/client.Dockerfile
+    container_name: ladle-client
+    ports:
+      - "3000:3000"
+    networks:
+      - ladle-net
+    depends_on:
+      - server
+    environment:
+      - NODE_ENV=development
+
+networks:
+  ladle-net:
+    driver: bridge

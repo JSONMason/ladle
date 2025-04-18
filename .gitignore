@@ -1,0 +1,23 @@
+# Node modules (for the frontend)
+client/node_modules/
+*.npmrc
+
+# Build artifacts
+client/public/build/
+server/*.exe
+server/*.out
+server/tmp/
+server/ladle
+
+# Docker-related files
+*.log
+*.pid
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+*.tfplan

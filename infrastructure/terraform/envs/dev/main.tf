@@ -30,7 +30,7 @@ module "ladle_vm" {
   name     = "ladle-app"
   region   = "nyc3"
   size     = "s-1vcpu-1gb"
-  image    = "docker-22-04"
+  image    = "docker-20-04"
   ssh_keys = [data.digitalocean_ssh_key.ladle.id]
   repo_url = "https://github.com/JSONMason/ladle.git"
 }

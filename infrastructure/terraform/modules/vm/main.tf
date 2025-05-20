@@ -18,9 +18,6 @@ resource "digitalocean_droplet" "this" {
   user_data = <<-EOF
                 #!/bin/bash
                 apt-get update
-                apt-get install -y docker.io docker-compose
-                git clone ${var.repo_url} /opt/${var.name}
-                cd /opt/${var.name}
-                docker-compose --file infrastructure/docker/compose.yaml up --build -d
+                apt-get install -y docker-compose
                 EOF
 }

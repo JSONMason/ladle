@@ -1,0 +1,6 @@
+services:
+  server:
+    build:
+      target: prod
+    environment:
+      - GO_ENV=production

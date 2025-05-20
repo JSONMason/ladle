@@ -25,6 +25,6 @@ variable "ssh_keys" {
 }
 
 variable "repo_url" {
-  description = "Git repository URL for your Ladle code"
+  description = "Git repository URL for Ladle"
   type        = string
 }

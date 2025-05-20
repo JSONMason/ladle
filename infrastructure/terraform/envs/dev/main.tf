@@ -1,4 +1,12 @@
 terraform {
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "Ladle"
+    workspaces {
+      name = "ladle"
+    }
+  }
+
   required_providers {
     digitalocean = {
       source  = "digitalocean/digitalocean"
@@ -28,9 +36,9 @@ module "ladle_vm" {
   }
 
   name     = "ladle-app"
+  image    = "docker-20-04"
   region   = "nyc3"
   size     = "s-1vcpu-1gb"
-  image    = "docker-20-04"
   ssh_keys = [data.digitalocean_ssh_key.ladle.id]
   repo_url = "https://github.com/JSONMason/ladle.git"
 }

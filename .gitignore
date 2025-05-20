@@ -1,3 +1,21 @@
+# Ignore all .env files in any folder
+**/.env
+
+# Terraform secrets & state
+infrastructure/terraform/**/*.tfvars
+infrastructure/terraform/**/*.tfstate*
+infrastructure/terraform/**/.terraform/
+
+# Node/npm artifacts
+client/node_modules/
+client/.npmrc
+
+# Go build binary
+server/ladle
+
+# Docker Compose override or local files
+infrastructure/docker/*.envrc
+
 # Node modules (for the frontend)
 client/node_modules/
 *.npmrc

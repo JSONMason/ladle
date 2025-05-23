@@ -33,7 +33,7 @@ jobs:
           context: server
           file: infrastructure/docker/server.Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/ladle-server:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}-server:latest
 
       - name: Build and push client image
         uses: docker/build-push-action@v6
@@ -41,7 +41,7 @@ jobs:
           context: client
           file: infrastructure/docker/client.Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/ladle-client:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}-client:latest
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3

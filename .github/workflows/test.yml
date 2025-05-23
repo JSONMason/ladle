@@ -7,4 +7,4 @@ on:
 
 jobs:
   test:
-    uses: ./ci-tests.yaml
+    uses: ./.github/workflows/ci-tests.yml

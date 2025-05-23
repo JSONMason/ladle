@@ -1,11 +1,6 @@
 # Ignore all .env files in any folder
 **/.env
 
-# Terraform secrets & state
-infrastructure/terraform/**/*.tfvars
-infrastructure/terraform/**/*.tfstate*
-infrastructure/terraform/**/.terraform/
-
 # Node/npm artifacts
 client/node_modules/
 client/.npmrc
@@ -39,4 +34,14 @@ server/ladle
 *.tfstate
 *.tfstate.backup
 *.tfplan
-.terraform/
+*tfplan
+*.tfvars
+*.tfstate*
+**/.terraform/
+**/.terraform/
+
+# Private notes
+.notes.md
+
+# macOS Finder metadata
+**/.DS_Store

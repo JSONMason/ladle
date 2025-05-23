@@ -1,6 +1,9 @@
 services:
   server:
+    image: ghcr.io/${GITHUB_REPOSITORY}/ladle-server:latest
     build:
       target: prod
     environment:
       - GO_ENV=production
+  client:
+    image: ghcr.io/${GITHUB_REPOSITORY}/ladle-client:latest

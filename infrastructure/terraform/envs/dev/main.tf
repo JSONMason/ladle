@@ -1,5 +1,5 @@
 terraform {
-  backend "remote" {
+  cloud {
     hostname     = "app.terraform.io"
     organization = "Ladle"
     workspaces {
@@ -18,14 +18,16 @@ terraform {
 provider "digitalocean" {
 }
 
-variable "do_ssh_key_name" {
-  type        = string
-  description = "Name of the SSH key stored in DigitalOcean (lookup via data source)"
+variable "do_ssh_key_names" {
+  type        = list(string)
+  description = "List of SSH key names in DO to authorize"
+  default     = ["macbook", "cicd"]
 }
 
-# Look up an existing SSH key in DigitalOcean by its name
-data "digitalocean_ssh_key" "ladle" {
-  name = var.do_ssh_key_name
+# Lookup each key by name
+data "digitalocean_ssh_key" "ladle_keys" {
+  for_each = toset(var.do_ssh_key_names)
+  name     = each.value
 }
 
 module "ladle_vm" {
@@ -35,11 +37,14 @@ module "ladle_vm" {
     digitalocean = digitalocean
   }
 
-  name     = "ladle-app"
-  image    = "docker-20-04"
-  region   = "nyc3"
-  size     = "s-1vcpu-1gb"
-  ssh_keys = [data.digitalocean_ssh_key.ladle.id]
+  name   = "ladle-app"
+  image  = "docker-20-04"
+  region = "nyc3"
+  size   = "s-1vcpu-1gb"
+  ssh_keys = [
+    for key in data.digitalocean_ssh_key.ladle_keys :
+    key.fingerprint
+  ]
   repo_url = "https://github.com/JSONMason/ladle.git"
 }
 

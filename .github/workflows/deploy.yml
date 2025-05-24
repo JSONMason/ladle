@@ -17,6 +17,8 @@ jobs:
     name: Deploy to Droplet
     needs: test
     runs-on: ubuntu-latest
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

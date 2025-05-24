@@ -70,19 +70,12 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ steps.droplet_ip.outputs.droplet_ip }} >> ~/.ssh/known_hosts
 
-      - name: Write .env to server
-        run: |
-          ssh root@${{ steps.droplet_ip.outputs.droplet_ip }} bash << 'SSH_EOF'
-          cat > /opt/ladle-app/infrastructure/docker/.env << 'EOF'
-          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-          EOF
-          SSH_EOF
-
       - name: Deploy via SSH
         env:
           REMOTE_HOST: ${{ steps.droplet_ip.outputs.droplet_ip }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         run: |
           chmod +x infrastructure/cicd/deploy.sh
           infrastructure/cicd/deploy.sh

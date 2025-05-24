@@ -25,6 +25,12 @@ ssh "${REMOTE_USER}@${REMOTE_HOST}" <<'EOF'
     git reset --hard origin/main
   fi
 
+  cat > "${REMOTE_DOCKER_DIR}/.env" <<EOF
+  POSTGRES_USER=${POSTGRES_USER}
+  POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  POSTGRES_DB=${POSTGRES_DB}
+  EOF
+
   # 3) Go to the Docker Compose folder
   cd "${REMOTE_DOCKER_DIR}"
 

@@ -24,7 +24,6 @@ variable "do_ssh_key_names" {
   default     = ["macbook", "cicd"]
 }
 
-# Lookup each key by name
 data "digitalocean_ssh_key" "ladle_keys" {
   for_each = toset(var.do_ssh_key_names)
   name     = each.value

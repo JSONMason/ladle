@@ -54,11 +54,6 @@ jobs:
         with:
           terraform_version: "1.12.0"
 
-      - name: Terraform Login
-        env:
-          TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
-        run: terraform login --token $TFC_TOKEN
-
       - name: Terraform Init
         run: terraform init -upgrade -input=false
         working-directory: infrastructure/terraform/envs/dev

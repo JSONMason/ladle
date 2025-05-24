@@ -1,5 +1,9 @@
 name: CD Deploy
 
+permissions:
+  contents: read
+  packages: write # allow pushing to GHCR
+
 on:
   push:
     branches:

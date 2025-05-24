@@ -60,7 +60,7 @@ jobs:
 
       - name: Get Droplet IP
         id: droplet_ip
-        run: echo "droplet_ip=$(terraform output -raw droplet_ip)" >> $GITHUB_OUTPUT
+        run: echo "droplet_ip=$(terraform output -raw ladle_public_ip)" >> $GITHUB_OUTPUT
         working-directory: infrastructure/terraform/envs/dev
 
       - name: Prepare SSH

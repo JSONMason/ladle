@@ -49,5 +49,6 @@ module "ladle_vm" {
 }
 
 output "ladle_public_ip" {
-  value = module.ladle_vm.droplet_ip
+  description = "Public IP from the VM module"
+  value       = module.ladle_vm.droplet_ip
 }

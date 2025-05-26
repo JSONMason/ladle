@@ -11,14 +11,16 @@ on:
 
 jobs:
   test:
+    name: Run Tests
     uses: ./.github/workflows/ci-tests.yml
 
-  deploy:
-    name: Deploy to Droplet
+  build:
+    name: Build & Push Images
     needs: test
     runs-on: ubuntu-latest
-    env:
-      TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
+    strategy:
+      matrix:
+        service: [server, client]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,35 +35,37 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push server image
+      - name: Build and push ${{ matrix.service }} image
         uses: docker/build-push-action@v6
         with:
-          context: server
-          file: infrastructure/docker/server.Dockerfile
+          context: ${{ matrix.service }}
+          file: infrastructure/docker/${{ matrix.service }}.Dockerfile
           push: true
-          tags: ghcr.io/jsonmason/ladle-server:latest
+          tags: ghcr.io/jsonmason/ladle-${{ matrix.service }}:latest
 
-      - name: Build and push client image
-        uses: docker/build-push-action@v6
-        with:
-          context: client
-          file: infrastructure/docker/client.Dockerfile
-          push: true
-          tags: ghcr.io/jsonmason/ladle-client:latest
+  deploy:
+    name: Deploy to Droplet
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TFC_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.12.0"
 
       - name: Terraform Init
-        run: terraform init -upgrade -input=false
         working-directory: infrastructure/terraform/envs/dev
+        run: terraform init -upgrade -input=false
 
       - name: Get Droplet IP
         id: droplet_ip
-        run: echo "droplet_ip=$(terraform output -raw ladle_public_ip)" >> $GITHUB_OUTPUT
         working-directory: infrastructure/terraform/envs/dev
+        run: echo "droplet_ip=$(terraform output -raw ladle_public_ip)" >> $GITHUB_OUTPUT
 
       - name: Prepare SSH
         run: |

@@ -45,13 +45,13 @@ Ladle will follow a similar workflow and support the following features that are
 - **Node.js** (18+) if you want to run the client outside of Docker
 - **Environment file** at `infrastructure/docker/` — create a `.env` with:
 
-  ```dotenv
-  POSTGRES_USER=
-  POSTGRES_PASSWORD=
-  POSTGRES_DB=ladle_db
-  # if running server without Docker, point at a local or remote Postgres:
-  DATABASE_URL=postgres://<USERNAME>:<PW>@localhost:5432/ladle_db?sslmode=disable
-  ```
+```dotenv
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=ladle_db
+# if running server without Docker, point at a local or remote Postgres:
+DATABASE_URL=postgres://<USERNAME>:<PW>@localhost:5432/ladle_db?sslmode=disable
+```
 
 ### Quick start with Docker Compose
 Make sure you're running the Docker daemon and from the repo root you can run:

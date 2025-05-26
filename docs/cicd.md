@@ -11,7 +11,6 @@ This document explains how the CI/CD pipeline for the Ladle application is confi
 - [Terraform Setup](#terraform-setup)
 - [Docker Setup](#docker-setup)
 - [GitHub Actions Workflows](#github-actions-workflows)
-- [Maintenance & Rotation](#maintenance-and-rotation)
 - [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
@@ -58,7 +57,8 @@ As mentioned in the [Digital Ocean API Token section](#digitalocean-api-token), 
 
 Once you have the required tokens setup, follow these steps to administer Terraform locally:
 
-```hcl
+```bash
+cd infrastructure/terraform/envs/dev
 terraform init
 terraform plan -out tfplan
 terraform apply "tfplan"
@@ -72,7 +72,7 @@ The Ladle app is composed of three containers:
 - **server**: Go backend API
 - **client**: SvelteKit frontend
 
-Locally, each image is built from its Dockerfile and run them all via `docker compose up`. In CI/CD, images are built in a GitHub Actions workflow & pushed to GitHub Container Registry (GHCR), then on the Droplet we use a `compose.prod.override.yaml` to pull the published images instead of rebuilding.
+Locally, each image is built from its Dockerfile. Run them all via `docker compose up`. In CI/CD, images are built in a GitHub Actions workflow & pushed to GitHub Container Registry (GHCR), then on the Droplet a `compose.prod.override.yaml` is used to pull the published images instead of rebuilding.
 
 ## GitHub Actions Workflows
 
